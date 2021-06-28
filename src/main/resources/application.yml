@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+gatewayserver:
+  jmx:
+    host: 127.0.0.1
+    port: 8899
+  stdout: true
+
+
+management:
+  port: 8899
+  security:
+    enabled: false
+
+task:
+  shell:
+    thread:
+      pool:
+        core: 4
+        max: 16
+        keepAliveTime: 10000
+        queue: 64
+spring:
+  profiles:
+    active: @profile.active@

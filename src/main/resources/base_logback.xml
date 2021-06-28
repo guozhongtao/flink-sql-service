@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+
+    <property name="BASE_LOG" value="./"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <immediateFlush>true</immediateFlush>
+        <encoder>
+            <!-- 格式化输出：%d表示日期，%t表示线程名，%p 级别, %logger logger name最多36字节 %msg：日志消息，%n是换行符 -->
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%level] [%thread] [%logger{50}] >>> %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FLOWFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${gatewayserver.logfile:-${BASE_LOG}/logs/log_receiver/sql-gateway.api.vip.com/gatewayserver}_flow.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每日rollup，保存最近30天日志 -->
+            <fileNamePattern>
+                ${gatewayserver.logfile:-${BASE_LOG}/logs/log_receiver/sql-gateway.api.vip.com/gatewayserver}_flow.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <append>true</append>
+        <immediateFlush>${gatewayserver.logfile.immediateflush:-true}</immediateFlush>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%level] [%thread] [%logger{50}] >>> %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FLOWFILE-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 队列满后会丢失日志 -->
+        <discardingThreshold>${flow.log.discarding:-1}</discardingThreshold>
+        <!-- 更改队列的深度,默认值为256 -->
+        <queueSize>${flow.log.queueSize:-40960}</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="FLOWFILE"/>
+    </appender>
+
+    <appender name="ERRORFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${gatewayserver.logfile:-${BASE_LOG}/logs/log_receiver/sql-gateway.api.vip.com/gatewayserver}_error.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每日rollup，保存最近30天日志 -->
+            <fileNamePattern>
+                ${gatewayserver.logfile:-${BASE_LOG}/logs/log_receiver/sql-gateway.api.vip.com/gatewayserver}_error.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <append>true</append>
+        <immediateFlush>${gatewayserver.logfile.immediateflush:-true}</immediateFlush>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%level] [%thread] [%logger{50}] >>> %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="ERRORFILE-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 队列满后会丢失日志 -->
+        <discardingThreshold>${error.log.discarding:-1}</discardingThreshold>
+        <!-- 更改队列的深度,默认值为256 -->
+        <queueSize>${error.log.queueSize:-40960}</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="ERRORFILE"/>
+        <!-- 只接收Error级别日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+</included>

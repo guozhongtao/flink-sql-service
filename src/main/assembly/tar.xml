@@ -1,0 +1,64 @@
+<assembly
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+
+    <id>tar</id>
+    <!--<baseDirectory>${project.build.finalName}</baseDirectory>-->
+    <baseDirectory>./</baseDirectory>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>com.tuhu.streamservice.gateway:stream_service:jar</include>
+            </includes>
+            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/assembly/logs</directory>
+            <outputDirectory>logs</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/assembly/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/assembly/conf</directory>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/assembly/flink-1.13.1</directory>
+            <outputDirectory>flink-1.13.1</outputDirectory>
+        </fileSet>
+    </fileSets>
+
+    <files>
+        <file>
+            <source>src/main/assembly/bin/gateway-server-default.sh</source>
+            <outputDirectory>bin</outputDirectory>
+            <destName>gateway-server-default.sh</destName>
+            <fileMode>777</fileMode>
+            <lineEnding>unix</lineEnding>
+        </file>
+        <file>
+            <source>src/main/assembly/bin/service.sh</source>
+            <outputDirectory>bin</outputDirectory>
+            <destName>service.sh</destName>
+            <fileMode>777</fileMode>
+            <lineEnding>unix</lineEnding>
+        </file>
+        <file>
+            <source>src/main/assembly/VERSION</source>
+            <outputDirectory></outputDirectory>
+            <destName>VERSION</destName>
+            <filtered>true</filtered>
+            <fileMode>666</fileMode>
+            <lineEnding>unix</lineEnding>
+        </file>
+    </files>
+</assembly>

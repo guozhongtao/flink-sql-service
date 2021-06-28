@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="base_logback.xml"/>
+
+    <!-- default logger, async to FLOWFILE and ERRORFILE, disabled STDOUT by default-->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FLOWFILE-ASYNC"/>
+        <appender-ref ref="ERRORFILE-ASYNC"/>
+    </root>
+</configuration>

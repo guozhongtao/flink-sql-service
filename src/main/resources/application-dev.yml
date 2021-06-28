@@ -1,0 +1,3 @@
+yarn:
+  rmMasterAddress: 10.100.103.181:8088
+  rmSlaveAddress: 10.100.103.181:8088
